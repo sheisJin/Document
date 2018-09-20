@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+    <title>numberRoof</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://view.gitlab2.uit.nhncorp.com/POST/m.post/raw/dist/css/w.css">
+    <link rel="stylesheet" type="text/css" href="http://view.gitlab2.uit.nhncorp.com/POST/m.post/raw/dist/css/w2.css">
+    <style>
+        .category_select_wrap .category_select_area.as_mobile .category_title{display: inline-block; width: 145px; border: 1px solid #ddd; padding: 0; font-size: 14px; }
+        .category_select_wrap .category_select_area.as_desktop .category_title{font-size: 14px; width: 145px; text-align: center; padding: 0; border: 1px solid #ddd; margin-left: -1px;}
+    </style>
+</head>
+<body>
+
+<div class="category_select_wrap">
+    <!-- 모웹 -->
+    <h1>Mobile</h1>
+    <label class="category_select_area as_mobile" for="editor_category">
+        <span class="category_title">전체</span>
+        <select id="editor_category">
+            <option>전체</option>
+            <option>여행</option>
+            <option>책·문화</option>
+            <option>핫이슈</option>
+            <option>차·테크</option>
+            <option>패션·뷰티</option>
+            <option>건강·지식</option>
+            <option>리빙·푸드</option>
+            <option>일러스트·웹툰</option>
+            <option>일상팁</option>
+            <option>스포츠·게임</option>
+            <option>라이프</option>
+            <option>이름이 긴 카테고리 이름이 긴 카테고리</option>
+        </select>
+    </label>
+
+    <br>
+
+    <!-- PC -->
+    <h1>PC</h1>
+    <div class="category_select_area as_desktop">
+        <a href="#" class="category_title">전체</a>
+        <!-- [D] 카테고리 목록 -->
+        <ul class="category_list">
+            <li class="category_item"><a href="#" class="category_link">전체</a></li>
+            <li class="category_item"><a href="#" class="category_link">여행</a></li>
+            <li class="category_item"><a href="#" class="category_link">책·문화</a></li>
+            <li class="category_item"><a href="#" class="category_link">핫이슈</a></li>
+            <li class="category_item"><a href="#" class="category_link">차·테크</a></li>
+            <li class="category_item"><a href="#" class="category_link">패션·뷰티</a></li>
+            <li class="category_item"><a href="#" class="category_link">건강·지식</a></li>
+            <li class="category_item"><a href="#" class="category_link">리빙·푸드</a></li>
+            <li class="category_item"><a href="#" class="category_link">일러스트·웹툰</a></li>
+            <li class="category_item"><a href="#" class="category_link">일상팁</a></li>
+            <li class="category_item"><a href="#" class="category_link">스포츠·게임</a></li>
+            <li class="category_item"><a href="#" class="category_link">라이프</a></li>
+            <li class="category_item"><a href="#" class="category_link">이름이 긴 카테고리 이름이 긴 카테고리</a></li>
+        </ul>
+    </div>
+    <!-- [D] // 데스크탑 환경일 때 -->
+
+
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    $(function(){
+        //mobile
+        $("#editor_category").on("change", function(){
+            var val = $('#editor_category option:selected').val();
+            $(".category_title").html(val);
+        });
+
+        //pc
+        $(".category_title").click(function(e){
+            $(".category_list").toggleClass("is_active");
+            e.preventDefault();
+        });
+        $(".category_list .category_link").click(function(e){
+            var val = $(this).html();
+            $(this).parent().addClass("is_selected").siblings().removeClass("is_selected");
+            $(".category_title").html(val);
+            $(".category_list").removeClass("is_active");
+            e.preventDefault();
+        });
+    });
+</script>

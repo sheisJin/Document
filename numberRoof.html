@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>numberRoof</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+      .numberRoof{}
+      .numberRoof button{display: inline-block; width: 50px; height: 50px; font-size: 25px;}
+      .numberList{padding: 0; margin: 10px 0 0 0;}
+      .numberList:after {display: block; content: ''; clear: both;}
+      .numberList li{ display: inline-block; float: left; width: 50px; height: 50px; margin: 0 5px; padding: 0; list-style: none; background: red;}
+    </style>
+  </head>
+  <body>
+
+    <div class="numberRoof">
+      <button type="button" name="button" data-state="add">+</button>
+      <button type="button" name="button" data-state="delete">-</button>
+    </div>
+    <ul class="numberList">
+      <li></li>
+    </ul>
+  </body>
+</html>
+<script>
+  $(function(){
+      var count = 0;
+      var colorNum = 0;
+      var itemNew = "<li></li>";
+      var bgColor = ["red", "orange", "gold", "yellowgreen", "green", "steelblue", "mediumpurple", "purple"];
+
+      $('.numberRoof button').click(function(e){
+          var state = $(this).data("state");
+          var itemList =  $(".numberList");
+          var items = $(itemList).children("li");
+          var itemLast = $(items).last();
+          var itemLength = $(items).length;
+
+          if(state == "add"){
+              if (itemLength == 0 ){
+                  count = 0;
+                  $(itemList).append(itemNew);
+              }else if(itemLength > 9){
+                return false;
+              }else{
+                count++;
+                //colorNum = count % bgColor.length;
+                var colorNum = colorNumFun(count, bgColor.length);
+                $(itemLast).after(itemNew).next().css('background', bgColor[colorNum]);
+              }
+          }else{
+            $(itemLast).remove();
+          }
+      });
+      function colorNumFun(count, bgcolorNum){
+          colorNum = count % bgcolorNum;
+          return colorNum;
+      }
+    })
+</script>
