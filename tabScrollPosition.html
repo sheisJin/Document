@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>numberRoof</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <style>
+        *{margin: 0; padding: 0;}
+        .wrap{width:100%; margin: 0 auto;}
+        .tabs{position:fixed; top: 0; left: 50%; right: 0; height: 57px; margin-left: -300px;}
+        .tabs ul{ display:inline-block; margin: 0 auto}
+        .tabs li{display:inline-block; width:100px; text-align: center; font-weight: bold; }
+        .tabs li a{ display: block; padding: 10px 0 10px; font-weight: normal; text-decoration: none; color: #000; background: #fff}
+        .tabs li.is_on a{background: #fff; font-weight: bold; color: red}
+        .cont_area{height:800px; width: 100%; padding-top: 70px}
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="tabWrap" class="tabs">
+        <ul>
+            <li class="tabMenu is_on" data-tab="cont1"><a href="#">메뉴1</a></li>
+            <li class="tabMenu" data-tab="cont2"><a href="#">메뉴2</a></li>
+            <li class="tabMenu" data-tab="cont3"><a href="#">메뉴3</a></li>
+            <li class="tabMenu" data-tab="cont4"><a href="#">메뉴4</a></li>
+            <li class="tabMenu" data-tab="cont5"><a href="#">메뉴5</a></li>
+        </ul>
+    </div>
+    <div class="contents">
+        <div id="cont1" class="cont_area" style="background: lightpink">메뉴1 컨텐츠 내용</div>
+        <div id="cont2" class="cont_area" style="background: lightblue">메뉴2 컨텐츠 내용</div>
+        <div id="cont3" class="cont_area" style="background: lightgreen">메뉴3 컨텐츠 내용</div>
+        <div id="cont4" class="cont_area" style="background: lightcyan">메뉴4 컨텐츠 내용</div>
+        <div id="cont5" class="cont_area" style="background: lightsalmon">메뉴5 컨텐츠 내용</div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+
+    var data = [];
+    var tabWrap = $('#tabWrap');
+    var tabMenu = tabWrap.find('li.tabMenu');
+    var tabCont;
+    var currentTab;
+    var tabMenuLength = tabMenu.length;
+    if(tabMenuLength){ setTabCont(tabMenuLength); }
+
+
+    function setTabCont(total){                 /* 컨텐츠 영역 높이값 세팅 & 컨텐츠 영역 좌표값 데이타 저장 */
+        var screenHeight = screen.height;
+        $('.cont_area').css('height', screenHeight);
+
+        for(var i=0; i< total; i++) {
+            var tabCont = $(tabMenu[i]).data('tab');
+            var contOffset = $('#'+tabCont).offset().top;
+            // tabCont: cont1~5 , tabContTop : cont1~5 위치값
+            data.push({'tabCont':tabCont, 'tabContTop':contOffset });
+        }
+    }
+    function setSelectTab(selectTab){           /* 선택된 탭 활성화  */
+        tabWrap.find('li').removeClass('is_on');
+        tabWrap.find('li').each(function(){
+            if($(this).data('tab') == selectTab){
+                $(this).addClass('is_on');
+            }
+        });
+    }
+    function moveSelectTap(selectTab){       /* 선택된 cont 위치 이동  */
+        var contTabNum = selectTab.split('cont')[1] - 1;
+        var contOffset = data[contTabNum].tabContTop;
+        //var contOffset = $('#'+contTab).offset().top;
+        $('body').animate({
+            scrollTop: contOffset + 1
+        });
+    }
+    function moveScroll(){       /* 선택된 cont 위치 이동  */
+        var currentPosition = $(this).scrollTop();
+        if(currentPosition > 0){
+            for(i=0; i<data.length; i++) {
+                var j = i+1;
+                if( data[i].tabContTop < currentPosition){
+                    currentTab = data[i].tabCont;
+                    if(!j == 4 && data[j].tabContTop > currentPosition){
+                        currentTab = data[i].tabCont;
+                    }
+                }
+            }
+            setSelectTab(currentTab);
+        }
+    }
+
+    $(document)
+        .on('click', '#tabWrap li', function(e){
+            var selectTab = $(this);
+            var contTab = selectTab.data('tab');
+            setSelectTab(contTab);
+            moveSelectTap(contTab);
+        })
+        .on('scroll', function(e){
+            moveScroll();
+        });
+
+
+    /*
+    var cont1 = $('#cont1'), cont1Height = cont1.offset().top;
+    var cont2 = $('#cont2'), cont2Height = cont2.offset().top;
+    var cont3 = $('#cont3'), cont3Height = cont3.offset().top;
+    var cont4 = $('#cont4'), cont4Height = cont4.offset().top;
+    var cont5 = $('#cont5'), cont5Height = cont5.offset().top;
+    var tabs = $('.tabs li').toArray();
+
+    $(document).on('scroll', function(e){
+        var current = $(document).scrollTop();
+        if(current > 0 && current < cont2Height){
+            innerClass('cont1');
+        }else if(current >= cont2Height && current < cont3Height){
+            innerClass('cont2');
+        }else if(current >= cont3Height && current < cont4Height){
+            innerClass('cont3');
+        }else if(current >= cont4Height && current < cont5Height) {
+            innerClass('cont4');
+        }else{
+            innerClass('cont5');
+        }
+        console.log(current, cont1Height, cont2Height);
+    })
+
+    function innerClass(data){
+        $('.tabs li').each(function(){
+            if($(this).data('tab') == data){
+                $('.tabs li').removeClass('is_on');
+                $(this).addClass('is_on');
+            }
+        });
+    }*/
+
+</script>
